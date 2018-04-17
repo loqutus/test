@@ -1,0 +1,4 @@
+graft master/templates
+graft slave/templates
+include master/schema.sql
+include slave/schema.sql

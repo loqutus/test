@@ -1,2 +1,5 @@
 venv/*
 .idea/*
+master/__pycache__
+slave/__pycache__
+test.egg-info/
