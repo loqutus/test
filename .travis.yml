@@ -4,3 +4,5 @@ python:
 script:
   - cd master
   - pytest
+  - cd slave
+  - pytest
