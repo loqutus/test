@@ -1,1 +1,0 @@
-from .slave import app
