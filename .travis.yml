@@ -2,7 +2,5 @@ language: python
 python:
   - "3.6"
 script:
-  - cd master
-  - pytest
-  - cd slave
+  - cd server
   - pytest
