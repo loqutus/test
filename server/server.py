@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+import json
 import sqlite3
 
 app = Flask(__name__)
@@ -34,25 +35,34 @@ def init_db():
 
 @app.route('/')
 def index():
-    db = get_db()
-    cur = db.execute('select key, value from entries order by id desc')
-    entries = cur.fetchall()
-    return render_template('index.html', entries=entries)
+    try:
+        db = get_db()
+        cur = db.execute('select key, value from entries order by id desc')
+        entries = cur.fetchall()
+        return render_template('index.html', entries=entries)
+    except Exception as e:
+        return str(e), 500
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
-    db = get_db()
-    db.execute('insert into entries (title, text) values (?, ?)',
-               [request.form['title'], request.form['text']])
-    db.commit()
-    return 'OK', 200
+    try:
+        db = get_db()
+        db.execute('insert into entries (key, value) values (?, ?)',
+                   [request.json['key'], request.form['value']])
+        db.commit()
+        return 'OK', 200
+    except Exception as e:
+        return str(e), 500
 
 
 @app.route('/initdb', methods=['GET'])
 def initdb():
-    init_db()
-    return 'OK', 200
+    try:
+        init_db()
+        return 'OK', 200
+    except Exception as e:
+        return str(e), 500
 
 
 if __name__ == '__main__':
